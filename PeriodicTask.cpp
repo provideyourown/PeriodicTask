@@ -4,20 +4,20 @@
 
 void PeriodicTask::doInit()
 {
-  setNextExpiration();
+  setNextExpiration(mTimeInterval);
 }
 
 void PeriodicTask::setTimeInterval(unsigned long timeInterval)
 {
   mTimeInterval = timeInterval;
-  setNextExpiration();
+  setNextExpiration(mTimeInterval);
 }
 
 void PeriodicTask::enableTask(bool runNow)
 {
   mEnabled = true;
    // set expiration time to something current, not zero - otherwise, during the latter half of micros, the task will not run (long)micros() is negative)
-  setNextExpiration(runNow);
+  setNextExpiration(mTimeInterval, runNow);
 }
 
 void PeriodicTask::run()
@@ -29,7 +29,7 @@ void PeriodicTask::run()
   {
     // doTask may change our time interval, so we do it first
     doTask();
-    setNextExpiration(); // set time for next task
+    setNextExpiration(mTimeInterval); // set time for next task
   }
   // else wait till next time
 }
@@ -39,8 +39,8 @@ unsigned long PeriodicTask::currentTime() const
   return mUseMillis? millis() : micros();
 }
 
-void PeriodicTask::setNextExpiration(bool runImmediately)
+void PeriodicTask::setNextExpiration(unsigned long timeInterval, bool runImmediately)
 {
-  mExpirationTime = (runImmediately)? currentTime() : currentTime() + mTimeInterval;
+  mExpirationTime = (runImmediately)? currentTime() : currentTime() + timeInterval;
 }
 

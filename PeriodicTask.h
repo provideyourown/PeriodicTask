@@ -7,6 +7,32 @@
  * unit can be set at construct time, millis is the default. It handles rollovers automatically using the technique described in http://arduino.cc/playground/Code/TimingRollover
  * To use, inherit from your class that will perform the task. This class must then implement the doTask() function, where it does its work.
  * Lastly, in order for the task to be executed, you must call myTask.run() each time in your loop() function.
+ *
+ * Usage:
+
+  class MyTask : public PeriodicTask {
+    MyTask() : PeriodicTask(10) {} // do task every 10 ms
+
+    virtual void init() { PeriodicTask::doInit(); } // you must call this in your setup() func
+
+    virtual void run() {} // (optional) - but do call this once each time in your loop() func; we overrode it so we can call SoftPWM run for our led
+
+protected:
+  virtual void doTask(); // here is where you will do your task
+  };
+
+  MyTask mytask;
+
+  void setup()
+  {
+    myTask.init();
+  }
+
+  void loop()
+  {
+    myTask.run();
+  }
+ *
  */
 class PeriodicTask {
 public:
@@ -33,7 +59,8 @@ protected:
 
   unsigned long currentTime() const;
 
-  void setNextExpiration(bool runImmediately = false);
+  // child classes can call this function directly for a longer/shorter one-time delay
+  void setNextExpiration(unsigned long timeInterval, bool runImmediately = false);
 
 
 private:
