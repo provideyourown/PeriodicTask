@@ -11,6 +11,7 @@
  * Usage:
 
   class MyTask : public PeriodicTask {
+  public:
     MyTask() : PeriodicTask(10) {} // do task every 10 ms
 
     virtual void init() { PeriodicTask::doInit(); } // you must call this in your setup() func
@@ -50,6 +51,7 @@ public:
 
   bool enabled() const { return mEnabled; }
 
+  // you can override this if you want another periodic task in your subclass.
   virtual void run(); // call this once each time in your loop() func
 
 protected:
@@ -69,6 +71,5 @@ private:
   unsigned long mExpirationTime;
   bool mEnabled;
 };
-
 
 #endif // PeriodicTask_h
