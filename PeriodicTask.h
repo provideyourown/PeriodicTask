@@ -3,7 +3,7 @@
 
 
 /**
- * PeriodicTask is essential a thread that executes a task at prescribed intervals. Its timing is based on either millis() or micros(), which
+ * PeriodicTask simulates a thread that executes a task at prescribed intervals. Its timing is based on either millis() or micros(), of which
  * unit can be set at construct time, millis is the default. It handles rollovers automatically using the technique described in http://arduino.cc/playground/Code/TimingRollover
  * To use, inherit from your class that will perform the task. This class must then implement the doTask() function, where it does its work.
  * Lastly, in order for the task to be executed, you must call myTask.run() each time in your loop() function.
